@@ -1,0 +1,13 @@
+<script src="/interpreter.js"></script>
+<script>
+  fetch("main.xf")
+    .then(r => r.text())
+    .then(code => {
+      const output = runXF(code);
+      document.open();
+      document.write(output);
+      document.close();
+    });
+</script>
+
+<script src="/main.xf"></script>
