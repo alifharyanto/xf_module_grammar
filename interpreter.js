@@ -4,46 +4,36 @@ function runXF(code) {
   let cssColor = "black";
   let vars = {};
 
-  // Doctype
   let html = `<!DOCTYPE html><html><head>`;
 
-  // Title
   const title = code.match(/\{title\}([\s\S]*?)\{\/title\}/);
   if (title) {
     html += `<title>${title[1].trim()}</title>`;
   }
   html += `</head><body>`;
 
-  // Warna
   const color = code.match(/color\s*>>\s*\("([^"]+)"\)/);
   if (color) cssColor = color[1];
 
-  // Variabel
   const varMatches = [...code.matchAll(/var!(\w+)\s*=\s*"([^"]*)"/g)];
   for (let v of varMatches) {
     vars[v[1]] = v[2];
   }
-
-  // tampil(variable)
   const tampilMatches = [...code.matchAll(/tampil\((\w+)\)/g)];
   for (let t of tampilMatches) {
     const val = vars[t[1]] ?? "";
     html += `<div style="color:${cssColor}">${val}</div>`;
   }
-
-  // Heading (banyak say >>)
   const sayAll = [...code.matchAll(/say\s*>>\s*\("([^"]*)"\)/g)];
   for (let s of sayAll) {
     html += `<h1 style="color:${cssColor}">${s[1]}</h1>`;
   }
 
-  // Paragraf (banyak p >>)
   const pAll = [...code.matchAll(/p\s*>>\s*\("([^"]*)"\)/g)];
   for (let p of pAll) {
     html += `<p style="color:${cssColor}">${p[1]}</p>`;
   }
 
-  // Button + href (banyak)
   const btnAll = [
     ...code.matchAll(/button\s*>>\s*\("([^"]*)"\s*\[\s*href\s*=\s*([^\]]+)\]\s*\)/g)
   ];
@@ -59,7 +49,6 @@ function runXF(code) {
     `;
   }
 
-  // If-else
   const ifMatches = [...code.matchAll(/jika\s*(.*?)\{([\s\S]*?)\}\{selain\}\{([\s\S]*?)\}/g)];
   for (let i of ifMatches) {
     try {
@@ -75,7 +64,6 @@ function runXF(code) {
     }
   }
 
-  // Loop ulang!N{}
   const loopMatches = [...code.matchAll(/ulang!(\d+)\{([\s\S]*?)\}/g)];
   for (let l of loopMatches) {
     const count = parseInt(l[1]);
@@ -101,7 +89,6 @@ function runXF(code) {
   return html;
 }
 
-// Terminal debug mode
 if (require.main === module) {
   const file = fs.readFileSync("/main.xf", "utf-8");
   const resultHTML = runXF(file);
@@ -110,7 +97,6 @@ if (require.main === module) {
   console.log(resultHTML);
   console.log("\n==================================\n");
 
-  // Prompt gabungan untuk AI di terminal
   const promptLines = code => [
     ...code.matchAll(/(say|p)\s*>>\s*\("([^"]*)"\)/g)
   ].map(m => m[2]).join("\n");
