@@ -1,7 +1,0 @@
-import href = main.html{
-{title}INI TITILE {/title}
-
-say >> ("Hello World ini dari bahasa pemograman xf dan ini HEADING H1")
-p >> ("halo ini paragraf")
-button >> ("ini adalah button"[href = https://fxintelligencebetatest.netlify.app])
-}
