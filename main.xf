@@ -1,0 +1,4 @@
+{title} ini adalah title dari xf {/title}
+say >> ("halo saya alif")
+p >> ("ini paragraf dari xf")
+button >> ("ini adalah button clik disini" [href = https://chatgpt.com])
